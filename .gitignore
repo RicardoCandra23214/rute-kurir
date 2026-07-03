@@ -1,0 +1,15 @@
+# Backend
+rute-kurir-backend/node_modules/
+rute-kurir-backend/.env
+rute-kurir-backend/*.log
+# Service Account Google
+rute-kurir-backend/service-account.json
+# Frontend
+rute-kurir-frontend/node_modules/
+rute-kurir-frontend/dist/
+rute-kurir-frontend/.env
+
+# Umum
+.DS_Store
+Thumbs.db
+*.zip
