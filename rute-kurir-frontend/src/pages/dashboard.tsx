@@ -1,4 +1,4 @@
-/// <reference types="leaflet" />
+
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@iconify/react";
 import Navbar from "../components/navbar";
@@ -94,8 +94,8 @@ const Dashboard = () => {
   const [nama, setNama] = useState("");
   const [alamat, setAlamat] = useState("");
   const [originalAddress, setOriginalAddress] = useState("");
-  const [searchLocation, setSearchLocation] = useState("");
-  const [locationResults, setLocationResults] = useState<any[]>([]);
+  const [_searchLocation, setSearchLocation] = useState("");
+  const [_locationResults, setLocationResults] = useState<any[]>([]);
   const [selectedLat, setSelectedLat] = useState<number | null>(null);
   const [selectedLng, setSelectedLng] = useState<number | null>(null);
   // Kamera OCR (scan resi)
@@ -108,7 +108,7 @@ const Dashboard = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // Edit
-  const [editId, setEditId] = useState<number | null>(null);
+const [_editId, setEditId] = useState<number | null>(null);
 
   const courierPosition: [number, number] = [-0.03158538648446664, 109.33996895006426];
 
