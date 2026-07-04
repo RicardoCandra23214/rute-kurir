@@ -2,17 +2,17 @@ import { Icon } from "@iconify/react";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#0f172a] text-white py-20 px-10 md:px-20">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-14">
+    <footer className="w-full bg-[#0f172a] text-white py-12 sm:py-16 md:py-20 px-5 sm:px-10 md:px-20">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 sm:gap-12 md:gap-14">
         {/* Brand */}
         <div>
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-blue-600 rounded-lg text-white font-bold text-xl px-1 py-2 flex items-center justify-center">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-red-500 to-blue-600 rounded-lg text-white font-bold text-lg sm:text-xl flex items-center justify-center">
               JNT
             </div>
             <div className="flex flex-col leading-tight">
-              <span className="font-bold text-3xl">JNT Express</span>
-              <span className="text-sm text-gray-400">Route Optimizer Kembayan</span>
+              <span className="font-bold text-xl sm:text-2xl md:text-3xl">JNT Express</span>
+              <span className="text-xs sm:text-sm text-gray-400">Route Optimizer Kembayan</span>
             </div>
           </div>
 

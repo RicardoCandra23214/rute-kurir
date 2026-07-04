@@ -106,10 +106,6 @@ const Dashboard = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  // Edit
-const [_editId, setEditId] = useState<number | null>(null);
-
   const courierPosition: [number, number] = [-0.03158538648446664, 109.33996895006426];
 
   // Fetch Data
@@ -400,13 +396,6 @@ const [_editId, setEditId] = useState<number | null>(null);
   }
 };
 
-  // Edit
-  const handleEdit = (item: AddressItem) => {
-    setNama(item.nama);
-    setAlamat(item.alamat);
-    setEditId(item.id);
-    // Modal edit bisa ditambahkan nanti
-  };
 
   // Optimize Route
   const handleOptimize = async () => {
@@ -668,12 +657,6 @@ const [_editId, setEditId] = useState<number | null>(null);
                       </td>
                       <td className="border p-3">
                         <div className="flex justify-center gap-2">
-                          <button
-                            onClick={() => handleEdit(item)}
-                            className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-1 rounded"
-                          >
-                            Edit
-                          </button>
                           <button
                             onClick={() => confirmDelete(item)}
                             className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded"

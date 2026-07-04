@@ -33,17 +33,17 @@ export default function Home() {
     >
       <section
         id="home"
-        className="flex flex-col items-center text-center px-4 pt-[100px]"
+        className="flex flex-col items-center text-center px-4 sm:px-6 pt-[90px] sm:pt-[100px]"
       >
         <h1
-          className={`text-6xl font-bold max-w-5xl leading-tight mt-16 transition-all duration-700 ease-out transform ${animation}`}
+          className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold max-w-5xl leading-tight mt-8 sm:mt-12 md:mt-16 transition-all duration-700 ease-out transform ${animation}`}
         >
           Optimasi Rute <span className="text-red-600">Kurir</span>{" "}
           <span className="text-blue-600">JNT</span> Express Gajahmada Pontianak
         </h1>
 
         <p
-          className={`text-gray-600 max-w-3xl mt-7 text-xl transition-all duration-700 ease-out transform delay-150 ${animation}`}
+          className={`text-gray-600 max-w-3xl mt-4 sm:mt-6 md:mt-7 text-base sm:text-lg md:text-xl transition-all duration-700 ease-out transform delay-150 ${animation}`}
         >
           Sistem yang mengoptimalkan jalur pengiriman untuk kurir JNT Express di
           Gajahmada, Pontianak. Membantu menghemat waktu, bahan bakar, serta
@@ -52,46 +52,46 @@ export default function Home() {
         </p>
 
         <div
-          className={`flex gap-6 mt-12 transition-all duration-700 ease-out transform delay-300 ${animation}`}
+          className={`flex flex-col sm:flex-row w-full sm:w-auto gap-3 sm:gap-4 md:gap-6 mt-8 sm:mt-10 md:mt-12 transition-all duration-700 ease-out transform delay-300 ${animation}`}
         >
           <Link
             to="/login"
-            className="px-8 py-4 rounded-md text-white font-semibold text-xl bg-gradient-to-r from-red-500 to-blue-600 shadow-lg transition transform hover:scale-105"
+            className="px-6 py-3 sm:px-7 sm:py-3.5 md:px-8 md:py-4 rounded-md text-white font-semibold text-base sm:text-lg md:text-xl bg-gradient-to-r from-red-500 to-blue-600 shadow-lg transition transform hover:scale-105"
           >
             Mulai Optimasi Rute
           </Link>
 
           <Link
             to="/demo"
-            className="px-8 py-4 rounded-md border-2 border-red-500 text-red-600 font-semibold text-xl hover:bg-red-600 hover:text-white transition transform hover:scale-105"
+            className="px-6 py-3 sm:px-7 sm:py-3.5 md:px-8 md:py-4 rounded-md border-2 border-red-500 text-red-600 font-semibold text-base sm:text-lg md:text-xl hover:bg-red-600 hover:text-white transition transform hover:scale-105"
           >
             Lihat Demo
           </Link>
         </div>
 
         <div
-          className={`mt-16 flex flex-wrap justify-center gap-56 text-center transition-all duration-700 ease-out transform delay-[450ms] ${animation}`}
+          className={`mt-10 sm:mt-14 md:mt-16 grid grid-cols-2 md:flex md:flex-wrap justify-center gap-x-6 gap-y-8 sm:gap-x-10 md:gap-16 lg:gap-24 text-center w-full max-w-4xl transition-all duration-700 ease-out transform delay-[450ms] ${animation}`}
         >
           <div className="flex flex-col items-center">
-            <h2 className="text-5xl font-bold text-red-600">20</h2>
-            <p className="text-xl text-black-600 font-medium">Kurir Aktif</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-red-600">20</h2>
+            <p className="text-sm sm:text-base md:text-xl text-black-600 font-medium">Kurir Aktif</p>
           </div>
 
           <div className="flex flex-col items-center">
-            <h2 className="text-5xl font-bold text-blue-600">30%</h2>
-            <p className="text-xl text-black-600 font-medium">Tepat Sasaran</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-600">30%</h2>
+            <p className="text-sm sm:text-base md:text-xl text-black-600 font-medium">Tepat Sasaran</p>
           </div>
 
           <div className="flex flex-col items-center">
-            <h2 className="text-5xl font-bold text-red-600">18%</h2>
-            <p className="text-xl text-black-600 font-medium">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-red-600">18%</h2>
+            <p className="text-sm sm:text-base md:text-xl text-black-600 font-medium">
               Penghematan BBM
             </p>
           </div>
 
           <div className="flex flex-col items-center">
-            <h2 className="text-5xl font-bold text-blue-600">25%</h2>
-            <p className="text-xl text-black-600 font-medium">Hemat Waktu</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-600">25%</h2>
+            <p className="text-sm sm:text-base md:text-xl text-black-600 font-medium">Hemat Waktu</p>
           </div>
         </div>
       </section>
