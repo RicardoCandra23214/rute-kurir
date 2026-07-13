@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@iconify/react";
 import Navbar from "../components/navbar";
@@ -89,6 +88,8 @@ const Dashboard = () => {
   // Modal
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<AddressItem | null>(null);
+  const [showDeleteAllModal, setShowDeleteAllModal] = useState(false);
+  const [isDeletingAll, setIsDeletingAll] = useState(false);
 
   // Form
   const [nama, setNama] = useState("");
@@ -106,7 +107,14 @@ const Dashboard = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   const courierPosition: [number, number] = [-0.03158538648446664, 109.33996895006426];
+
+  // Tanggal hari ini, format DD/MM/YYYY
+  const today = new Date();
+  const todayFormatted = `${String(today.getDate()).padStart(2, "0")}/${String(
+    today.getMonth() + 1
+  ).padStart(2, "0")}/${today.getFullYear()}`;
 
   // Fetch Data
   const fetchPackages = async () => {
@@ -180,6 +188,25 @@ const Dashboard = () => {
   const confirmDelete = (item: AddressItem) => {
     setSelectedPackage(item);
     setShowDeleteModal(true);
+  };
+
+  // Delete All
+  const handleDeleteAll = async () => {
+    setIsDeletingAll(true);
+    try {
+      await Promise.all(
+        addresses.map((item) =>
+          fetch(`http://localhost:5000/api/packages/${item.id}`, { method: "DELETE" })
+        )
+      );
+      setOptimizedRoute([]);
+      fetchPackages();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsDeletingAll(false);
+      setShowDeleteAllModal(false);
+    }
   };
 
   // Parsing hasil teks OCR -> nama & alamat (dipakai upload file maupun kamera)
@@ -396,7 +423,6 @@ const Dashboard = () => {
   }
 };
 
-
   // Optimize Route
   const handleOptimize = async () => {
     if (!user.id) return;
@@ -435,56 +461,6 @@ const Dashboard = () => {
       <div className="p-6 pt-32 space-y-6">
         {/* Map Section */}
         <div className="bg-white rounded-xl shadow overflow-hidden">
-          <div className="p-4 border-b flex flex-wrap gap-3 items-end">
-            {/* Nama Penerima */}
-            <div>
-              <input
-                type="text"
-                placeholder="Nama Penerima"
-                value={nama}
-                onChange={(e) => setNama(e.target.value)}
-                className="border px-3 py-2 rounded-lg w-64"
-              />
-            </div>
-
-             {/* Alamat + Search */}
-              <div className="flex-1">
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Contoh: jalan danau sentarum, gang sentarum jaya no A5. sungai bangkong pontianak kota"
-                    value={alamat}
-                    onChange={(e) => {
-                      setAlamat(e.target.value);
-                      setOriginalAddress(e.target.value);
-                    }}
-                    className="border px-3 py-2 rounded-lg flex-1"
-                  />
-                  <button
-                    type="button"
-                    onClick={openCamera}
-                    title="Scan resi pakai kamera"
-                    className="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg transition flex items-center justify-center"
-                  >
-                    <Icon icon="mdi:camera" width={20} height={20} />
-                  </button>
-                  <button
-                    onClick={() => searchAddress(alamat)}
-                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg transition"
-                  >
-                    Cari
-                  </button>
-                </div>
-              </div>
-           
-            <button
-              onClick={handleAddData}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg transition"
-            >
-              + Tambah Alamat
-            </button>
-          </div>
-
           {/* Map */}
           <div className="h-[300px]">
             {/* MAP CONTAINER */}
@@ -596,26 +572,92 @@ const Dashboard = () => {
                 </MapContainer>
               </div>
           </div>
+
+          {/* Form: Nama, Alamat, Cari, Kamera, Tambah Alamat - di bawah Map */}
+          <div className="p-4 border-t flex flex-col md:flex-row md:flex-wrap gap-3 md:items-end">
+            {/* Nama Penerima */}
+            <div className="w-full md:w-64">
+              <input
+                type="text"
+                placeholder="Nama Penerima"
+                value={nama}
+                onChange={(e) => setNama(e.target.value)}
+                className="border px-3 py-2 rounded-lg w-full"
+              />
+            </div>
+
+             {/* Alamat + Search */}
+              <div className="w-full md:flex-1">
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <input
+                    type="text"
+                    placeholder="Contoh: jalan danau sentarum, gang sentarum jaya no A5. sungai bangkong pontianak kota"
+                    value={alamat}
+                    onChange={(e) => {
+                      setAlamat(e.target.value);
+                      setOriginalAddress(e.target.value);
+                    }}
+                    className="border px-3 py-2 rounded-lg w-full sm:flex-1"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={openCamera}
+                      title="Scan resi pakai kamera"
+                      className="flex-1 sm:flex-none bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg transition flex items-center justify-center"
+                    >
+                      <Icon icon="mdi:camera" width={20} height={20} />
+                    </button>
+                    <button
+                      onClick={() => searchAddress(alamat)}
+                      className="flex-1 sm:flex-none bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg transition"
+                    >
+                      Cari
+                    </button>
+                  </div>
+                </div>
+              </div>
+           
+            <button
+              onClick={handleAddData}
+              className="w-full md:w-auto bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg transition"
+            >
+              + Tambah Alamat
+            </button>
+          </div>
         </div>
 
         {/* Table Section */}
-        <div className="bg-white p-6 rounded-xl shadow">
-          <div className="flex justify-between items-center mb-6">
+        <div className="bg-white p-4 sm:p-6 rounded-xl shadow">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0 mb-4 sm:mb-6">
             <div>
-              <h2 className="text-2xl font-semibold">Data Paket</h2>
-              <p className="text-gray-500">{addresses.length} paket</p>
+              <h2 className="text-xl sm:text-2xl font-semibold">Data Paket</h2>
+              <p className="text-gray-500 text-sm sm:text-base">{addresses.length} paket</p>
             </div>
 
             <button
               onClick={handleOptimize}
               disabled={isOptimizing}
-              className="bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white px-6 py-2 rounded-lg transition"
+              className="w-full sm:w-auto bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white px-6 py-2 rounded-lg transition"
             >
               {isOptimizing ? "Mengoptimasi..." : "🔄 Optimasi Rute"}
             </button>
           </div>
 
-          <div className="overflow-x-auto">
+          {/* Tanggal & Hapus All */}
+          <div className="flex justify-between items-center pb-3 mb-3 border-b text-sm sm:text-base">
+            <span className="text-gray-500">{todayFormatted}</span>
+            <button
+              onClick={() => setShowDeleteAllModal(true)}
+              disabled={addresses.length === 0}
+              className="text-red-500 hover:text-red-600 font-medium disabled:text-gray-300 disabled:cursor-not-allowed"
+            >
+              Hapus All
+            </button>
+          </div>
+
+          {/* DESKTOP: Table (md ke atas) */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-gray-100">
@@ -671,6 +713,61 @@ const Dashboard = () => {
               </tbody>
             </table>
           </div>
+
+          {/* MOBILE: Card List (di bawah md) */}
+          <div className="md:hidden space-y-4">
+            {addresses.length === 0 ? (
+              <p className="text-center text-gray-500 py-8">Belum ada data paket</p>
+            ) : (
+              addresses.map((item, index) => (
+                <div
+                  key={item.id}
+                  className="border-2 border-gray-800 rounded-2xl p-4"
+                >
+                  <div className="flex justify-between items-start gap-3">
+                    <h3 className="font-bold text-lg">{item.nama}</h3>
+                    <div className="flex gap-1 shrink-0">
+                      <button
+                        onClick={() => moveRow(index, "up")}
+                        className="bg-gray-200 hover:bg-gray-300 w-7 h-7 flex items-center justify-center rounded text-sm"
+                        aria-label="Naikkan urutan"
+                      >
+                        ↑
+                      </button>
+                      <button
+                        onClick={() => moveRow(index, "down")}
+                        className="bg-gray-200 hover:bg-gray-300 w-7 h-7 flex items-center justify-center rounded text-sm"
+                        aria-label="Turunkan urutan"
+                      >
+                        ↓
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2 mt-3">
+                    <Icon
+                      icon="mdi:map-marker"
+                      className="text-gray-400 shrink-0 mt-0.5"
+                      width={18}
+                      height={18}
+                    />
+                    <p className="text-gray-700 text-sm leading-relaxed">
+                      {item.alamat}
+                    </p>
+                  </div>
+
+                  <div className="flex justify-end mt-3">
+                    <button
+                      onClick={() => confirmDelete(item)}
+                      className="text-red-500 hover:text-red-600 font-medium text-sm"
+                    >
+                      "hapus"
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
 
@@ -702,6 +799,36 @@ const Dashboard = () => {
                 className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600"
               >
                 Hapus
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete All Confirmation Modal */}
+      {showDeleteAllModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] px-4">
+          <div className="bg-white w-full max-w-[400px] rounded-2xl p-6">
+            <h2 className="text-xl font-semibold">Konfirmasi Hapus Semua</h2>
+            <p className="mt-3 text-gray-600">
+              Yakin ingin menghapus seluruh{" "}
+              <span className="font-semibold">{addresses.length} paket</span>? Tindakan ini
+              tidak bisa dibatalkan.
+            </p>
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => setShowDeleteAllModal(false)}
+                disabled={isDeletingAll}
+                className="border px-5 py-2 rounded-lg hover:bg-gray-100 disabled:opacity-50"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleDeleteAll}
+                disabled={isDeletingAll}
+                className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 disabled:bg-gray-400"
+              >
+                {isDeletingAll ? "Menghapus..." : "Hapus Semua"}
               </button>
             </div>
           </div>
