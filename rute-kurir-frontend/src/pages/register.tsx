@@ -24,7 +24,7 @@ export default function Register() {
     try {
 
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "https://rute-kurir-production.up.railway.app",
         {
           nama,
           email,

@@ -23,7 +23,7 @@ export default function Login() {
     try {
 
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://rute-kurir-production.up.railway.app",
         {
           email,
           password,
