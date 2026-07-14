@@ -12,6 +12,7 @@ import "leaflet/dist/leaflet.css";
 import * as L from "leaflet";
 import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import { API_URL } from "../config/api";
 
 declare module "leaflet" {
   namespace Routing {
@@ -120,7 +121,7 @@ const Dashboard = () => {
   const fetchPackages = async () => {
     if (!user.id) return;
     try {
-      const response = await fetch(`http://localhost:5000/api/packages/${user.id}`);
+      const response = await fetch(`${API_URL}/api/packages/${user.id}`);
       const data = await response.json();
       if (data.success) {
         setAddresses(data.data);
@@ -142,7 +143,7 @@ const Dashboard = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/packages", {
+      const response = await fetch(`${API_URL}/api/packages`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -178,7 +179,7 @@ const Dashboard = () => {
   // Delete
   const handleDelete = async (id: number) => {
     try {
-      await fetch(`http://localhost:5000/api/packages/${id}`, { method: "DELETE" });
+      await fetch(`${API_URL}/api/packages/${id}`, { method: "DELETE" });
       fetchPackages();
     } catch (error) {
       console.error(error);
@@ -196,7 +197,7 @@ const Dashboard = () => {
     try {
       await Promise.all(
         addresses.map((item) =>
-          fetch(`http://localhost:5000/api/packages/${item.id}`, { method: "DELETE" })
+          fetch(`${API_URL}/api/packages/${item.id}`, { method: "DELETE" })
         )
       );
       setOptimizedRoute([]);
@@ -272,7 +273,7 @@ const Dashboard = () => {
       const formData = new FormData();
       formData.append("image", blob, filename);
 
-      const response = await fetch("http://localhost:5000/api/ocr", {
+      const response = await fetch(`${API_URL}/api/ocr`, {
         method: "POST",
         body: formData,
       });
@@ -403,7 +404,7 @@ const Dashboard = () => {
 
   try {
     const response = await fetch(
-      `http://localhost:5000/api/search-location?q=${encodeURIComponent(keyword)}`
+  `${API_URL}/api/search-location?q=${encodeURIComponent(keyword)}`
     );
     const data = await response.json();
 
@@ -428,7 +429,7 @@ const Dashboard = () => {
     if (!user.id) return;
     setIsOptimizing(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/optimize-route/${user.id}`);
+      const response = await fetch(`${API_URL}/api/optimize-route/${user.id}`);
       const data = await response.json();
       if (data.success) {
         setOptimizedRoute(data.route);

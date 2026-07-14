@@ -1,11 +1,8 @@
 import illustration from "../assets/img/jnt-login.png";
-
 import { useState } from "react";
-
 import axios from "axios";
-
 import toast from "react-hot-toast";
-
+import { API_URL } from "../config/api";
 import {
   Link,
   useNavigate,
@@ -24,7 +21,7 @@ export default function Register() {
     try {
 
       const response = await axios.post(
-        "https://rute-kurir-production.up.railway.app",
+        `${API_URL}/api/auth/register`,
         {
           nama,
           email,
