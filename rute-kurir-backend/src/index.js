@@ -13,9 +13,22 @@ const locationRoutes = require("./routes/locationRoutes");
 const app = express();
 
 // MIDDLEWARE
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://rute-kurir-frontend-psi.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+      // izinkan request tanpa origin (misal dari Postman/curl) dan origin yang ada di list
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
   })
 );
 
