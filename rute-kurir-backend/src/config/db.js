@@ -1,5 +1,7 @@
 const mysql = require("mysql2");
 
+let connection;
+
 function createConnection() {
   const db = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -29,7 +31,7 @@ function createConnection() {
   return db;
 }
 
-let connection = createConnection();
+createConnection();
 
 module.exports = {
   query: (...args) => connection.query(...args),
